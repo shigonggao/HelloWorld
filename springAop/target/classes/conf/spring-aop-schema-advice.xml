@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+ http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+    <!-- 切面类 -->
+    <bean id="myAspect" class="com.sgg.demo.MyAspect"></bean>
+
+    <!-- 业务类 -->
+    <bean id="aspectBiz" class="com.sgg.demo.AspectBiz"></bean>
+    <bean id="sggBiz" class="com.sgg.demo.SggBiz"></bean>
+    <!-- aop配置 可以配置多个-->
+    <aop:config>
+        <!-- 切面类 -->
+        <aop:aspect id="aspectTest" ref="myAspect">
+            <!-- 切入点  标识切入点 aop包下类名包含Biz的类的所有方法-->
+            <aop:pointcut expression="execution(* com.sgg.demo.*Biz.*(..))" id="myPointcut"/>
+            <!-- 通知 ,通过切入点切入切入切面类中的before方法-->
+            <aop:before method="before" pointcut-ref="myPointcut"/>
+            <aop:after-returning method="afterReturning" pointcut-ref="myPointcut"/>
+            <aop:after-throwing method="afteThrowing" pointcut-ref="myPointcut"/>
+            <aop:after method="after" pointcut-ref="myPointcut"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
